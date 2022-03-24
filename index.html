@@ -4,9 +4,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/reset.css">
+    <link rel="stylesheet" href="./assets/css/styles.css">
     <title>Javascript Code Quiz</title>
+
 </head>
 <body>
-    
+    <div id="app">
+        <header>
+          <button id="highScores" data-states="[0,2]">High Scores</button>
+          <p id="timerTxt" data-states="[1]" class="hide">Timer: </p><span id="timer" data-states="[1]" class="hide"></span>
+        </header>
+        <main>
+          <section id="screen0" data-states="[0]">
+            <h1>Apex Legends Trivia</h1>
+            <button>Drop In</button>
+          </section>
+          <section id="screen1" class="hide" data-states="[1]">
+            <h2 id="question"></h2>
+            <ul id="possibleAnswers"></ul>
+            <p>____________________________________________________</p><br>
+            <h3><span id="message" class="hide"></span></h3>
+          </section>
+          <section id="screen2" class="hide" data-states="[2]">
+            <h2>Game Over</h2>
+            <p>Final Score: <span id="finalScore"></span></p>
+            <form id="highScoreFrm">
+                <p>Enter Initials: </p>
+            <label class="inptInitLbl">
+                <input type="text" id="inptInit">
+              </label>
+            </form>
+            <button>Submt</button>
+          </section>
+          <section id="screen3" class="hide" data-states="[3]">
+            <h1>High Scores</h1>
+            <ul id="highScoresUL"></ul>
+            <button>Start Menu</button>
+          </section>
+        </main>
+      </div>
+  
+      <script src="./assets/js/script.js"></script>
+    </body>
 </body>
 </html>

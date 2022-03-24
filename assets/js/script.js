@@ -1,0 +1,193 @@
+//------------------------------->Variables<---------------------------------
+var screen0Ele = document.querySelector("#screen0");
+var screen0ButtonEle = screen0Ele.querySelector("button");
+var screen1Ele = document.querySelector("#screen1");
+var screen1ButtonEle = screen1Ele.querySelector("button");
+var screen2Ele = document.querySelector("#screen2");
+var screen2ButtonEle = screen2Ele.querySelector("button");
+var highScoresButtonEle = document.querySelector("#highScores");
+var timerEle = document.querySelector("#timer");
+var timerTextEle = document.querySelector("#timerTxt");
+var questionEl = document.querySelector("#question");
+var answersEl = document.querySelector("#possibleAnswers");
+var initialEl = document.querySelector("#inptInit");
+var highScoresEL = document.querySelector("#highScoresUL");
+var messageEl = document.querySelector("#message");
+
+
+var HIDE_CLASS = "hide";
+
+var storedHighScores =[];
+
+class quizGameObj {
+    constructor(initials, score) {
+        this.initials = initials;
+        this.score = score;
+    }
+};
+
+var questions = [
+  {
+    question: "What house was Harry Potter in?",
+    answers: ["Gryffindoor", "Ravenclaw", "Slytherin", "Hufflepuff"],
+    answer: 0
+  },
+  {
+    question: "What was Hermione's cat's name?",
+    answers: ["Crookshanks", "Peter Pettigrew", "Scabbers", "Harry"],
+    answer: 0
+  }
+];
+var currentQuestion = 0;
+
+var dynamicElements = [
+  screen0Ele,
+  screen1Ele,
+  screen2Ele,
+  timerTextEle,
+  timerEle,
+  highScoresButtonEle
+];
+
+
+//------------------------------->Functions<---------------------------------
+
+function init() {
+
+  setEventListeners();
+}
+
+function storeGame() {
+    localStorage.setItem("storedHighScores", JSON.stringify(storedHighScores));
+  }
+
+function newGame(){
+    var currentGame = new window.quizGameObj("",0)
+}
+     
+function checkAnswer(currentQuestion, answerID) {
+    debugger
+    if (answerID=questions[currentQuestion][answer]) {
+        right(true);
+    } else {
+        right(false)
+    }
+}
+
+function right(right) {
+    if (right) {
+        currentGame["score"]++
+        displayMessage("right");
+    } else {
+        currentGame["score"]--
+        displayMessage("Wrong");
+    }
+}
+function displayMessage(message) {
+    if (message=="right") {
+      messageEl.textContent = "Correct Answer! Good Job";
+    } else {
+      messageEl.textContent = "Wrong Answer Sorry Fam";
+    }
+  }
+
+function setState(state) {
+  switch (state) {
+    case 1:
+      populateQuestion();
+      break;
+    case 2:
+        populateHighScores();
+        break;
+    default:
+      break;
+  }
+
+  dynamicElements.forEach(function (ele) {
+    var possibleStatesAttr = ele.getAttribute("data-states");
+    console.log(possibleStatesAttr);
+    var possibleStates = JSON.parse(possibleStatesAttr);
+    console.log(possibleStatesAttr);
+    if (possibleStates.includes(state)) {
+      ele.classList.remove(HIDE_CLASS);
+    } else {
+      ele.classList.add(HIDE_CLASS);
+    }
+  });
+}
+
+function populateQuestion() {
+  var questionObj = questions[currentQuestion];
+  // Remove the current list items
+  answersEl.innerHTML = "";
+  questionEl.textContent = questionObj.question;
+  questionObj.answers.forEach(function (question) {
+    var li = document.createElement("li");
+    li.setAttribute("data-answer")
+    li.textContent = question;
+    answersEl.appendChild(li);
+  });
+  if (currentQuestion === questions.length - 1) {
+    currentQuestion = 0;
+  } else {
+    currentQuestion++;
+  }
+}
+
+function setInitials (finalScore) {
+    game["initials"]=initialEl.value;
+    game["score"]=finalScore
+    storedHighScores.push(currentGame);
+}
+
+function populateHighScores () {
+    storedHighScores=localStorage.getItem("storedHighScores");
+
+}
+
+function countdown() {
+    var timeLeft = 10;
+      timeInterval = setInterval(function () {
+      if (timeLeft > 1) {
+        timerEl.textContent = timeLeft + " seconds remaining";
+        timeLeft--;
+      } else if (timeLeft === 1) {
+        timerEl.textContent = timeLeft + " second remaining";
+        timeLeft--;
+      } else {
+        timerEl.textContent = "";
+        clearInterval(timeInterval);
+        winOrLoss(false);
+      }
+    }, 1000);
+  }
+  
+//------------------------------->Events<---------------------------------
+
+function setEventListeners() {
+  screen0ButtonEle.addEventListener("click", function () {
+    setState(1);
+  });
+//   screen1ButtonEle.addEventListener("click", function () {
+//     setState(2);
+//   });
+  screen2ButtonEle.addEventListener("click", function () {
+    setState(0);
+  });
+  highScoresButtonEle.addEventListener("click", function () {
+    setState(3);
+  });
+  // Notice we are placing the event listener on the UL element.
+  // This is because the UL element is never destroyed whereas
+  // the list elements are always destroyed and re-created. We would
+  // need to add the event listeners to the list items
+  // every time we created one.
+  answersEl.addEventListener("click", function (evt) {
+    var target = evt.target;
+    if (target.matches("li")) {
+      window.alert(target.innerText);
+    }
+  });
+}
+
+init();
