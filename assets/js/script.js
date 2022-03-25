@@ -11,9 +11,10 @@ var timerTextEle = document.querySelector("#timerTxt");
 var questionEl = document.querySelector("#question");
 var answersEl = document.querySelector("#possibleAnswers");
 var initialEl = document.querySelector("#inptInit");
-var highScoresEL = document.querySelector("#highScoresUL");
+var highScoresEl = document.querySelector("#highScoresUL");
 var messageEl = document.querySelector("#message");
-
+var finalScoreEl=document.querySelector("#finalScore")
+var timeLeft;
 
 var HIDE_CLASS = "hide";
 
@@ -70,13 +71,6 @@ function newGame(){
     currentGame = new quizGameObj("",0)
 }
 
-function rungame() {
-    newGame();
-    populateQuestion;
-    //countdown()
-
-}
-
 function checkAnswer(currentQuestion, answerID) {
     console.log(answerID);
    console.log(questions[currentQuestion]['answer']);
@@ -94,7 +88,7 @@ function right(right) {
     } else {
         currentGame["score"]--
         displayMessage("Wrong");
-        timeleft=timeleft-5
+        timeLeft=timeLeft-5
     }
 }
 function displayMessage(message) {
@@ -108,9 +102,13 @@ function displayMessage(message) {
 function setState(state) {
   switch (state) {
     case 1:
-        rungame
+        newGame();
+        populateQuestion(currentQuestion)
       break;
     case 2:
+        setInitials(currentGame.score)
+        break;
+    case 3:
         populateHighScores();
         break;
     default:
@@ -140,17 +138,20 @@ function populateQuestion() {
     li.textContent = answer;
     answersEl.appendChild(li);
   };
-  if (currentQuestion === questions.length - 1) {
-    currentQuestion = 0;
-  } else {
-    currentQuestion++;
-  }
+//   if (currentQuestion === questions.length - 1) {
+//     currentQuestion = 0;
+//   } else {
+//     currentQuestion++;
+//   }
 }
 
 function setInitials (finalScore) {
-    game["initials"]=initialEl.value;
-    game["score"]=finalScore
+    currentGame["initials"]=initialEl.value;
+    finalScore=currentGame["score"];
+    finalScoreEl.textContent=finalScore;
     storedHighScores.push(currentGame);
+    storeGame();
+
 }
 
 function populateHighScores () {
@@ -159,7 +160,7 @@ function populateHighScores () {
 }
 
 function countdown() {
-        timeLeft = 30;
+      timeLeft = 30;
       timeInterval = setInterval(function () {
       if (timeLeft > 1) {
         timerEle.textContent = timeLeft + " seconds remaining";
@@ -185,7 +186,7 @@ function setEventListeners() {
 //     setState(2);
 //   });
   screen2ButtonEle.addEventListener("click", function () {
-    setState(0);
+    setState(3);
   });
   highScoresButtonEle.addEventListener("click", function () {
     setState(3);
@@ -198,7 +199,16 @@ function setEventListeners() {
   answersEl.addEventListener("click", function (evt) {
     var target = evt.target;
     if (target.matches("li")) {
-        checkAnswer(currentQuestion-1,target.getAttribute("data-index"));
+        checkAnswer(currentQuestion,target.getAttribute("data-index"));
+        console.log(currentQuestion)
+    if (currentQuestion === questions.length-1) {
+        console.log("Last Question");
+        checkAnswer(currentQuestion,target.getAttribute("data-index"));
+        setState(2);
+    } else {
+        currentQuestion++;
+        populateQuestion(currentQuestion)
+    }
     }
   });
 }
