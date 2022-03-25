@@ -5,13 +5,15 @@ var screen1Ele = document.querySelector("#screen1");
 var screen1ButtonEle = screen1Ele.querySelector("button");
 var screen2Ele = document.querySelector("#screen2");
 var screen2ButtonEle = screen2Ele.querySelector("button");
-var highScoresButtonEle = document.querySelector("#highScores");
+var screen3Ele = document.querySelector("#screen3");
+var screen3ButtonEle = screen3Ele.querySelector("button");
+var highScoresButtonEle = document.querySelector("#highScoresBtn");
 var timerEle = document.querySelector("#timer");
 var timerTextEle = document.querySelector("#timerTxt");
 var questionEl = document.querySelector("#question");
 var answersEl = document.querySelector("#possibleAnswers");
 var initialEl = document.querySelector("#inptInit");
-var highScoresEl = document.querySelector("#highScoresUL");
+var highScoresEl = document.querySelector("#highScoresEl");
 var messageEl = document.querySelector("#message");
 var finalScoreEl=document.querySelector("#finalScore")
 var timeLeft;
@@ -43,6 +45,7 @@ var questions = [
     answers: ["Crookshanks", "Peter Pettigrew", "Scabbers", "Harry"],
     answer: 0
   }
+  
 ];
 var currentQuestion = 0;
 
@@ -50,6 +53,7 @@ var dynamicElements = [
   screen0Ele,
   screen1Ele,
   screen2Ele,
+  screen3Ele,
   timerTextEle,
   timerEle,
   highScoresButtonEle
@@ -61,6 +65,7 @@ var dynamicElements = [
 function init() {
 
   setEventListeners();
+  populateHighScores ()
 }
 
 function storeGame() {
@@ -68,12 +73,14 @@ function storeGame() {
   }
 
 function newGame(){
+    currentQuestion=0;
     currentGame = new quizGameObj("",0)
 }
 
 function checkAnswer(currentQuestion, answerID) {
-    console.log(answerID);
-   console.log(questions[currentQuestion]['answer']);
+    console.log("answerID: " + answerID);
+   console.log("answer object:")
+    console.log(questions[currentQuestion]['answer']);
     if (answerID==questions[currentQuestion]['answer']) {
         right(true);
     } else {
@@ -83,7 +90,9 @@ function checkAnswer(currentQuestion, answerID) {
 
 function right(right) {
     if (right) {
+        console.log("Before score: " + currentGame["score"])
         currentGame["score"]++
+        console.log("After score: " + currentGame["score"])
         displayMessage("right");
     } else {
         currentGame["score"]--
@@ -100,13 +109,14 @@ function displayMessage(message) {
   }
 
 function setState(state) {
-  switch (state) {
+    console.log("State: " + state)
+    switch (state) {
     case 1:
         newGame();
         populateQuestion(currentQuestion)
       break;
     case 2:
-        setInitials(currentGame.score)
+        finalScoreEl.textContent=currentGame.score;
         break;
     case 3:
         populateHighScores();
@@ -148,16 +158,40 @@ function populateQuestion() {
 function setInitials (finalScore) {
     currentGame["initials"]=initialEl.value;
     finalScore=currentGame["score"];
-    finalScoreEl.textContent=finalScore;
     storedHighScores.push(currentGame);
     storeGame();
 
 }
 
 function populateHighScores () {
-    storedHighScores=localStorage.getItem("storedHighScores");
-
+    console.log("Getting High Scores")
+    console.log("storedHighScores before:")
+    console.log(storedHighScores);
+    storedHighScores=JSON.parse(localStorage.getItem("storedHighScores"));
+    console.log(storedHighScores);
+    console.log("storedHighScores after:")
+    highScoresEl.innerHTML=""
+    var tbl = document.createElement("table");
+    var tblh=document.createElement("thead")
+    var tblBody = document.createElement("tbody");
+    var c, r
+    r = tbl.insertRow(0);
+    c=r.insertCell(0);
+    c.innerHTML="Initials";
+    c=r.insertCell(1);
+    c.innerHTML="Score"
+    storedHighScores.forEach(function (gameobj, index) {
+        console.log("[" + index + "]: " + gameobj.initials);
+        var c, r
+        r = tbl.insertRow(index+1);
+        c=r.insertCell(0);
+        c.innerHTML=gameobj.initials
+        c=r.insertCell(1);
+        c.innerHTML=gameobj.score
+        highScoresEl.appendChild(tbl);
+        });
 }
+
 
 function countdown() {
       timeLeft = 30;
@@ -186,10 +220,14 @@ function setEventListeners() {
 //     setState(2);
 //   });
   screen2ButtonEle.addEventListener("click", function () {
+    setInitials(currentGame.score);
     setState(3);
   });
   highScoresButtonEle.addEventListener("click", function () {
     setState(3);
+  });
+  screen3ButtonEle.addEventListener("click", function () {
+    setState(0);
   });
   // Notice we are placing the event listener on the UL element.
   // This is because the UL element is never destroyed whereas
@@ -200,10 +238,9 @@ function setEventListeners() {
     var target = evt.target;
     if (target.matches("li")) {
         checkAnswer(currentQuestion,target.getAttribute("data-index"));
-        console.log(currentQuestion)
+        // console.log(currentQuestion)
     if (currentQuestion === questions.length-1) {
-        console.log("Last Question");
-        checkAnswer(currentQuestion,target.getAttribute("data-index"));
+        console.log("Game Ended");
         setState(2);
     } else {
         currentQuestion++;

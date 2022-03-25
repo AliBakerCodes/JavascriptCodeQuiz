@@ -12,7 +12,7 @@
 <body>
     <div id="app">
         <header>
-          <button id="highScores" data-states="[0,2]">High Scores</button>
+          <button id="highScoresBtn" data-states="[0,2]">High Scores</button>
           <p id="timerTxt" data-states="[1]" class="hide">Timer: </p><span id="timer" data-states="[1]" class="hide"></span>
         </header>
         <main>
@@ -39,7 +39,8 @@
           </section>
           <section id="screen3" class="hide" data-states="[3]">
             <h1>High Scores</h1>
-            <ul id="highScoresUL"></ul>
+            <p id="highScoresEl"></p>
+                
             <button>Start Menu</button>
           </section>
         </main>
