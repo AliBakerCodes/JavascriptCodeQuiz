@@ -19,12 +19,17 @@ var HIDE_CLASS = "hide";
 
 var storedHighScores =[];
 
-class quizGameObj {
-    constructor(initials, score) {
+//   const quizGameObj ={
+//     initials: "",
+//     score: 0
+// }
+
+function quizGameObj(initials, score)  {
         this.initials = initials;
         this.score = score;
     }
-};
+
+
 
 var questions = [
   {
@@ -62,12 +67,20 @@ function storeGame() {
   }
 
 function newGame(){
-    var currentGame = new window.quizGameObj("",0)
+    currentGame = new quizGameObj("",0)
 }
-     
+
+function rungame() {
+    newGame();
+    populateQuestion;
+    //countdown()
+
+}
+
 function checkAnswer(currentQuestion, answerID) {
-    debugger
-    if (answerID=questions[currentQuestion][answer]) {
+    console.log(answerID);
+   console.log(questions[currentQuestion]['answer']);
+    if (answerID==questions[currentQuestion]['answer']) {
         right(true);
     } else {
         right(false)
@@ -81,6 +94,7 @@ function right(right) {
     } else {
         currentGame["score"]--
         displayMessage("Wrong");
+        timeleft=timeleft-5
     }
 }
 function displayMessage(message) {
@@ -94,7 +108,7 @@ function displayMessage(message) {
 function setState(state) {
   switch (state) {
     case 1:
-      populateQuestion();
+        rungame
       break;
     case 2:
         populateHighScores();
@@ -105,9 +119,7 @@ function setState(state) {
 
   dynamicElements.forEach(function (ele) {
     var possibleStatesAttr = ele.getAttribute("data-states");
-    console.log(possibleStatesAttr);
     var possibleStates = JSON.parse(possibleStatesAttr);
-    console.log(possibleStatesAttr);
     if (possibleStates.includes(state)) {
       ele.classList.remove(HIDE_CLASS);
     } else {
@@ -121,12 +133,13 @@ function populateQuestion() {
   // Remove the current list items
   answersEl.innerHTML = "";
   questionEl.textContent = questionObj.question;
-  questionObj.answers.forEach(function (question) {
+  for (i=0;i< questionObj.answers.length; i++) {
+    var answer =  questionObj.answers[i];
     var li = document.createElement("li");
-    li.setAttribute("data-answer")
-    li.textContent = question;
+    li.setAttribute("data-index",i);
+    li.textContent = answer;
     answersEl.appendChild(li);
-  });
+  };
   if (currentQuestion === questions.length - 1) {
     currentQuestion = 0;
   } else {
@@ -146,18 +159,18 @@ function populateHighScores () {
 }
 
 function countdown() {
-    var timeLeft = 10;
+        timeLeft = 30;
       timeInterval = setInterval(function () {
       if (timeLeft > 1) {
-        timerEl.textContent = timeLeft + " seconds remaining";
+        timerEle.textContent = timeLeft + " seconds remaining";
         timeLeft--;
       } else if (timeLeft === 1) {
-        timerEl.textContent = timeLeft + " second remaining";
+        timerEle.textContent = timeLeft + " second remaining";
         timeLeft--;
       } else {
-        timerEl.textContent = "";
+        timerEle.textContent = "";
         clearInterval(timeInterval);
-        winOrLoss(false);
+        setState(2);
       }
     }, 1000);
   }
@@ -185,7 +198,7 @@ function setEventListeners() {
   answersEl.addEventListener("click", function (evt) {
     var target = evt.target;
     if (target.matches("li")) {
-      window.alert(target.innerText);
+        checkAnswer(currentQuestion-1,target.getAttribute("data-index"));
     }
   });
 }
