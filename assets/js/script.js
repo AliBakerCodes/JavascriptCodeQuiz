@@ -98,8 +98,7 @@ var dynamicElements = [
   screen1Ele,
   screen2Ele,
   screen3Ele,
-  timerTextEle,
-  timerEle,
+//   timerEle,
   highScoresButtonEle
 ];
 
@@ -238,8 +237,9 @@ function populateHighScores () {
     console.log("storedHighScores before:")
     console.log(storedHighScores);
     storedHighScores=JSON.parse(localStorage.getItem("storedHighScores"));
-    console.log(storedHighScores);
     console.log("storedHighScores after:")
+    console.log(storedHighScores);
+
     highScoresEl.innerHTML=""
     var tbl = document.createElement("table");
     var tblh=document.createElement("thead")
@@ -247,9 +247,9 @@ function populateHighScores () {
     var c, r
     r = tbl.insertRow(0);
     c=r.insertCell(0);
-    c.innerHTML="Initials";
+    c.innerHTML="<h2>Initials</h2>";
     c=r.insertCell(1);
-    c.innerHTML="Score"
+    c.innerHTML="<h2>Score</h2>"
     if (storedHighScores !== null){
         console.log("High Scores Present")
         displayMessage("high");
