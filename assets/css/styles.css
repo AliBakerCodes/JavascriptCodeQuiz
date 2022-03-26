@@ -85,6 +85,7 @@ h2 {
       text-align: left;
       left:100px;
       margin:10px;
+      line-height: 1.5;
   }
   #screen0 li {
       position:relative;
