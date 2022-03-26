@@ -1,11 +1,22 @@
+:root{
+    
+}
+
 body {
     font-family: sans-serif;
+    background-image: url("../images/apexbackground.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: 50% 50%;
+    background-size: cover;
+    background-position: center;
   }
   
   header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
+    text-align: center; 
   }
 
 
@@ -13,21 +24,45 @@ body {
     margin: 0;
     padding: 0;
     flex: 1;
-    text-align: center; 
+    
   }
   
   header button {
     padding: 10px;
   }
   
+  main {
+    
+  }
+ 
   section {
     display: block;
+    background-color: rgb(92, 110, 124);
+    font-size: 18px;
     border: 1px solid black;
-    min-height: 100px;
-    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px 0px;color: hsl(206, 17%, 28%);
+    min-height: 300px;
+    max-width: 800px;
+    margin:0 auto;
+    padding: 30px 40px;
+    text-align: center;
+ }
+  #screen0 button {
+    position:relative;  
+    top: 100px;
+    border-radius: 5px;
     padding: 10px;
   }
   
+  #screen0 {
+      color:antiquewhite
+  }
+
+  #screen0 h1 {
+      margin-bottom: 10px;
+      color:antiquewhite;
+  }
   .hide {
     display: none;
   }
