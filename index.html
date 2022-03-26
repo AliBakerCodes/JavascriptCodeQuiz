@@ -13,20 +13,37 @@
     <div id="app">
         <header>
           <button id="highScoresBtn" data-states="[0,2]">High Scores</button>
-          <p id="timerTxt" data-states="[1]" class="hide">Timer: </p><span id="timer" data-states="[1]" class="hide"></span>
         </header>
         <main>
-          <section id="screen0" data-states="[0]">
+          <!-- Start Screen -->
+            <section id="screen0" data-states="[0]">
             <h1>Apex Legends Trivia</h1>
-            <p>Welcome Legends! How much do you really know about the best battle royale game on the planet?Test your ability in this Trivia Game!</p>
+            <p>Welcome Legends! How much do you really know about the best battle royale game on the planet? Test your ability in this Trivia Game!</p>
+            Rules:
+            <ul>
+                <li>You have 30 seconds until the ring closes and the game is over</li>
+                <li>Choose your answer</li>
+                <li>Right Answer: +1 point</li>
+                <li>Wrong Answer: -1 point and lose 5 seconds</li>
+                <li>Game Over when you answer all the questions or the ring closes!</li>
+            </ul>
+            <!-- Start Game Button -->
             <button>Drop In</button>
           </section>
+          <!-- Game Screen -->
           <section id="screen1" class="hide" data-states="[1]">
-            <h2 id="question"></h2>
-            <ul id="possibleAnswers"></ul>
+            <span id="timer"></span><br>
+            <h2 id="question">Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit </h2>
+            <ol id="possibleAnswers">
+                <li>LoremIpsumDeltaBravo</li>
+                <li>LoremIpsumDeltaBravo</li>
+                <li>LoremIpsumDeltaBravo</li>
+                <li>LoremIpsumDeltaBravo</li>
+            </ol>
             <p>____________________________________________________</p><br>
             <h3><span id="message"></span></h3>
           </section>
+          <!-- Enter High Scores Screen -->
           <section id="screen2" class="hide" data-states="[2]">
             <h2>Game Over!</h2>
             <h2>Final Score: <span id="finalScore"></span></h2>
@@ -36,13 +53,15 @@
                 <input type="text" id="inptInit">
               </label>
             </form>
+            <!-- Submit High Scores Button -->
             <button>Submt</button>
           </section>
+          <!-- Show High Scores Screen -->
           <section id="screen3" class="hide" data-states="[3]">
             <h1>High Scores</h1>
             <h2 id="highScoresMsg"></h2>
             <p id="highScoresEl"></p>
-                
+            <!-- Back to start screen -->
             <button>Start Menu</button>
           </section>
         </main>

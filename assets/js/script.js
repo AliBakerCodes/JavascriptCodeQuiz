@@ -18,7 +18,7 @@ var messageEl = document.querySelector("#message");
 var finalScoreEl=document.querySelector("#finalScore");
 var highScoresMsg=document.querySelector("#highScoresMsg");
 var timeLeft;
-var timeInterval
+var timeInterval;
 
 var HIDE_CLASS = "hide";
 
@@ -108,7 +108,6 @@ var dynamicElements = [
 //Initial function, runs on page load, will set the listeners and fetch saved 
 //High score data
 function init() {
-
   setEventListeners();
   populateHighScores ();
 }
@@ -182,7 +181,7 @@ function setState(state) {
         newGame();
       break;
     case 2:
-        finalScoreEl.textContent=currentGame.score;
+        setFinalScore()
         break;
     case 3:
         populateHighScores();
@@ -216,6 +215,11 @@ function populateQuestion() {
     li.textContent = answer;
     answersEl.appendChild(li);
   };
+}
+
+//Display the final score
+function setFinalScore() {
+    finalScoreEl.textContent=currentGame.score;
 }
 
 //Get initials and pair with score and write to storage

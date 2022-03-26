@@ -1,7 +1,10 @@
+/* Variables */
 :root{
-    
+    --cardtext: #faebd7;
+    --shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px 0px;
+    --glow: black;
 }
-
+/* Global Elements */
 body {
     font-family: sans-serif;
     background-image: url("../images/apexbackground.jpg");
@@ -14,56 +17,96 @@ body {
   
   header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     margin-bottom: 20px;
     text-align: center; 
   }
 
 
-  header p {
-    margin: 0;
-    padding: 0;
-    flex: 1;
-    
-  }
   
-  header button {
+  /* Pretty Buttons (4am) */
+    button {
+    box-shadow:--shadow;
     padding: 10px;
+    margin: 20px;
   }
   
-  main {
+  h1 {
+    margin-bottom: 10px;
+    color:var(--cardtext)
+}
+
+h2 {
+  margin-bottom: 10px;
+  color:var(--cardtext);
+  text-decoration: underline;
+}
+
+  /* #highScoresBtn{
+
+  } */
+  /* main {
     
-  }
- 
+  } */
+  /* .hide {
+    display: none;
+  } */
+
+  /* Cards */
   section {
     display: block;
     background-color: rgb(92, 110, 124);
     font-size: 18px;
     border: 1px solid black;
     border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px 0px;color: hsl(206, 17%, 28%);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px 0px;
+    color:var(--cardtext);
     min-height: 300px;
     max-width: 800px;
     margin:0 auto;
     padding: 30px 40px;
     text-align: center;
+    
  }
-  #screen0 button {
+/* Start Screen */
+#screen0 button {
     position:relative;  
-    top: 100px;
+    top: 20px;
     border-radius: 5px;
     padding: 10px;
   }
   
-  #screen0 {
-      color:antiquewhite
-  }
-
-  #screen0 h1 {
-      margin-bottom: 10px;
-      color:antiquewhite;
-  }
-  .hide {
-    display: none;
+  #screen0 p {
+      position:relative;
+        margin: 20px;
   }
   
+  #screen0 ul {
+      margin:10px;
+  }
+  #screen0 li {
+      position:relative;
+      list-style:disc ;
+    }
+/* Game Screen */
+#screen1 ul {
+    margin:10px;
+    text-align: center;
+}
+
+#screen1 li {
+
+    border: 1px solid;
+    border-radius: 5px;
+    transition: all 0.01s ease-in-out;
+    width: 300px;
+    padding:8px;
+    margin: 5px;
+  }
+              
+  #screen1 li:hover,
+  #screen1 li:hover  {
+    box-shadow: inset 0px 0px 8px
+    var(--glow), 0 0 15px
+    var(--glow); 
+  }
