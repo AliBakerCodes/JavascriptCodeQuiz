@@ -15,8 +15,10 @@ var answersEl = document.querySelector("#possibleAnswers");
 var initialEl = document.querySelector("#inptInit");
 var highScoresEl = document.querySelector("#highScoresEl");
 var messageEl = document.querySelector("#message");
-var finalScoreEl=document.querySelector("#finalScore")
+var finalScoreEl=document.querySelector("#finalScore");
+var highScoresMsg=document.querySelector("#highScoresMsg");
 var timeLeft;
+var timeInterval
 
 var HIDE_CLASS = "hide";
 
@@ -36,19 +38,61 @@ function quizGameObj(initials, score)  {
 
 var questions = [
   {
-    question: "What house was Harry Potter in?",
-    answers: ["Gryffindoor", "Ravenclaw", "Slytherin", "Hufflepuff"],
+    question: "Which Legend's passive ability is the ability to fly using jets?",
+    answers: ["Octane", "Gibraltar", "Revenant", "Valkarie"],
+    answer: 3
+  },
+  {
+    question: "What map is not in the current rotation (Season 12)?",
+    answers: ["Kings Canyon", "Storm Pointe", "World's Edge", "Olympus"],
+    answer: 2
+  },
+  {
+    question: "What is Octane's Ultimate Ability?",
+    answers: ["Stim to run faster", "Jump Pad", "Steal Teamate's loot", "Smoke"],
+    answer: 1
+  },
+  {
+    question: "Which Legend over-explains every time she pings an item?",
+    answers: ["Bangalore", "Loba", "Mad Maggie", "Horizon"],
     answer: 0
   },
   {
-    question: "What was Hermione's cat's name?",
-    answers: ["Crookshanks", "Peter Pettigrew", "Scabbers", "Harry"],
+    question: "Which Legend is meme-famouse for 'Mozambique Here!'?",
+    answers: ["Bloodhound", "Horizon", "Caustic", "Lifeline"],
+    answer: 3
+  },
+  {
+    question: "Which Legend was obviously inspired by 'Old Town Road' rapper 'Lil Nas X'?",
+    answers: ["Seer", "Octane", "Mirage", "Fuse"],
     answer: 0
-  }
-  
+  },
+  {
+    question: "Which Lengend drops a minature 'Nessie' when emoting?",
+    answers: ["Pathfinder", "Ash", "Watson", "Crypto"],
+    answer: 2
+  },
+  {
+    question: "Which weapon is NOT in the current Season (Season 12) Care Package?",
+    answers: ["Spitfire", "Volt SMG", "Alternator", "G7 Scout"],
+    answer: 2
+  },
+  {
+      //Intentional trick question. Mirage deploys holographic clones to distract from the real
+      //Mirage. You get "bamboozled" when you shoot a clone and it disappears
+      //All the answers are right, but only one is the real one, to "Bamboozle" the player!
+    question: "*Trick Question* Which Legend is famous for deploying clones to 'Bamboozle?'",
+    answers: ["Mirage", "Mirage", "Mirage", "Mirage"],
+    answer: 3
+  },
+  {
+    question: "Which Legend is the goto choice for sweats and will hot drop, get knocked, and immediately disconnect?",
+    answers: ["Loba", "Wraith", "Rampart", "Lifeline"],
+    answer: 3
+  },
 ];
 var currentQuestion = 0;
-
+//These are the elements that will change with state change.
 var dynamicElements = [
   screen0Ele,
   screen1Ele,
@@ -61,22 +105,29 @@ var dynamicElements = [
 
 
 //------------------------------->Functions<---------------------------------
-
+//Initial function, runs on page load, will set the listeners and fetch saved 
+//High score data
 function init() {
 
   setEventListeners();
-  populateHighScores ()
+  populateHighScores ();
 }
 
+//Stores the game in localStorage
 function storeGame() {
     localStorage.setItem("storedHighScores", JSON.stringify(storedHighScores));
   }
 
+ //New game function. Resets the current question, creates the new game object
+ //Populates the question content on screen 1. Starts the timer 
 function newGame(){
     currentQuestion=0;
-    currentGame = new quizGameObj("",0)
+    currentGame = new quizGameObj("",0);
+    populateQuestion(currentQuestion);
+    countdown();
 }
 
+//Checks if the answer is correct. Passes to right wrong function
 function checkAnswer(currentQuestion, answerID) {
     console.log("answerID: " + answerID);
    console.log("answer object:")
@@ -84,10 +135,12 @@ function checkAnswer(currentQuestion, answerID) {
     if (answerID==questions[currentQuestion]['answer']) {
         right(true);
     } else {
-        right(false)
+        right(false);
     }
 }
 
+//If right advance the score. If wrong, decrement the score and take off 5 secs
+//Display the right or wrong message
 function right(right) {
     if (right) {
         console.log("Before score: " + currentGame["score"])
@@ -100,20 +153,33 @@ function right(right) {
         timeLeft=timeLeft-5
     }
 }
-function displayMessage(message) {
-    if (message=="right") {
-      messageEl.textContent = "Correct Answer! Good Job";
-    } else {
-      messageEl.textContent = "Wrong Answer Sorry Fam";
-    }
-  }
 
+//Handles all messaging to the user. Right, wrong, no saved data, saved data found
+function displayMessage(message) {
+    switch (message) {
+    case "right": 
+        messageEl.textContent = "Correct Answer! Good Job";
+        break;
+    case "wrong":
+      messageEl.textContent = "Wrong Answer Sorry Fam";
+        break;
+    case "noHigh":
+        highScoresMsg.textContent = "Be the first to Score!";
+        highScoresMsg.classList.remove(HIDE_CLASS);
+        break;
+    case "high":
+        highScoresMsg.classList.add(HIDE_CLASS);
+        break;
+  }
+}
+
+//Switches between set states by hiding or unhiding screens based on
+//where we are in the game. Runs functions on a per state basis
 function setState(state) {
     console.log("State: " + state)
     switch (state) {
     case 1:
         newGame();
-        populateQuestion(currentQuestion)
       break;
     case 2:
         finalScoreEl.textContent=currentGame.score;
@@ -125,6 +191,8 @@ function setState(state) {
       break;
   }
 
+  //Here is where we use the data-states attribute to show or hide 
+  //based on state
   dynamicElements.forEach(function (ele) {
     var possibleStatesAttr = ele.getAttribute("data-states");
     var possibleStates = JSON.parse(possibleStatesAttr);
@@ -136,9 +204,9 @@ function setState(state) {
   });
 }
 
+//Populates the question and possible answers as a list
 function populateQuestion() {
   var questionObj = questions[currentQuestion];
-  // Remove the current list items
   answersEl.innerHTML = "";
   questionEl.textContent = questionObj.question;
   for (i=0;i< questionObj.answers.length; i++) {
@@ -148,13 +216,9 @@ function populateQuestion() {
     li.textContent = answer;
     answersEl.appendChild(li);
   };
-//   if (currentQuestion === questions.length - 1) {
-//     currentQuestion = 0;
-//   } else {
-//     currentQuestion++;
-//   }
 }
 
+//Get initials and pair with score and write to storage
 function setInitials (finalScore) {
     currentGame["initials"]=initialEl.value;
     finalScore=currentGame["score"];
@@ -163,6 +227,8 @@ function setInitials (finalScore) {
 
 }
 
+//Populates the High score page with stored game data
+//or show a message if first visit and no data found
 function populateHighScores () {
     console.log("Getting High Scores")
     console.log("storedHighScores before:")
@@ -180,6 +246,9 @@ function populateHighScores () {
     c.innerHTML="Initials";
     c=r.insertCell(1);
     c.innerHTML="Score"
+    if (storedHighScores !== null){
+        console.log("High Scores Present")
+        displayMessage("high");
     storedHighScores.forEach(function (gameobj, index) {
         console.log("[" + index + "]: " + gameobj.initials);
         var c, r
@@ -190,9 +259,14 @@ function populateHighScores () {
         c.innerHTML=gameobj.score
         highScoresEl.appendChild(tbl);
         });
+    } else {
+        console.log("No High Scores Present")
+        displayMessage("noHigh");
+        storedHighScores=[];
+    }
 }
 
-
+//The timer. If the timer reaches 0, Game Over!
 function countdown() {
       timeLeft = 30;
       timeInterval = setInterval(function () {
@@ -211,14 +285,14 @@ function countdown() {
   }
   
 //------------------------------->Events<---------------------------------
+//All of the listeners in one function. The button clicks all advance the state
+//Sets a listener on the UL element since the LI element is dynamically created
+//and destroyed. Clicking on the LI elements is how you choose the possible answer
 
 function setEventListeners() {
   screen0ButtonEle.addEventListener("click", function () {
     setState(1);
   });
-//   screen1ButtonEle.addEventListener("click", function () {
-//     setState(2);
-//   });
   screen2ButtonEle.addEventListener("click", function () {
     setInitials(currentGame.score);
     setState(3);
@@ -229,18 +303,13 @@ function setEventListeners() {
   screen3ButtonEle.addEventListener("click", function () {
     setState(0);
   });
-  // Notice we are placing the event listener on the UL element.
-  // This is because the UL element is never destroyed whereas
-  // the list elements are always destroyed and re-created. We would
-  // need to add the event listeners to the list items
-  // every time we created one.
   answersEl.addEventListener("click", function (evt) {
     var target = evt.target;
     if (target.matches("li")) {
         checkAnswer(currentQuestion,target.getAttribute("data-index"));
-        // console.log(currentQuestion)
     if (currentQuestion === questions.length-1) {
         console.log("Game Ended");
+        clearInterval(timeInterval);
         setState(2);
     } else {
         currentQuestion++;
@@ -250,4 +319,5 @@ function setEventListeners() {
   });
 }
 
+//Call init function and set the stage for first page load
 init();
