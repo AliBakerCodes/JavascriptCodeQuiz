@@ -1,6 +1,6 @@
 //------------------------------->Variables<---------------------------------
 var screen0Ele = document.querySelector("#screen0");
-var screen0ButtonEle = screen0Ele.querySelector("button");
+var screen0ButtonEle = screen0Ele.querySelector("#startGamebtn");
 var screen1Ele = document.querySelector("#screen1");
 var screen1ButtonEle = screen1Ele.querySelector("button");
 var screen2Ele = document.querySelector("#screen2");
@@ -9,7 +9,6 @@ var screen3Ele = document.querySelector("#screen3");
 var screen3ButtonEle = screen3Ele.querySelector("button");
 var highScoresButtonEle = document.querySelector("#highScoresBtn");
 var timerEle = document.querySelector("#timer");
-var timerTextEle = document.querySelector("#timerTxt");
 var questionEl = document.querySelector("#question");
 var answersEl = document.querySelector("#possibleAnswers");
 var initialEl = document.querySelector("#inptInit");
@@ -24,17 +23,10 @@ var HIDE_CLASS = "hide";
 
 var storedHighScores =[];
 
-//   const quizGameObj ={
-//     initials: "",
-//     score: 0
-// }
-
 function quizGameObj(initials, score)  {
         this.initials = initials;
         this.score = score;
     }
-
-
 
 var questions = [
   {
@@ -88,7 +80,7 @@ var questions = [
   {
     question: "Which Legend is the goto choice for sweats and will hot drop, get knocked, and immediately disconnect?",
     answers: ["Loba", "Wraith", "Rampart", "Lifeline"],
-    answer: 3
+    answer: 1
   },
 ];
 var currentQuestion = 0;
@@ -139,15 +131,14 @@ function checkAnswer(currentQuestion, answerID) {
 
 //If right advance the score. If wrong, decrement the score and take off 5 secs
 //Display the right or wrong message
+// Scoring change made to be more like the mock-up where score=timeleft
 function right(right) {
     if (right) {
         console.log("Before score: " + currentGame["score"])
-        currentGame["score"]++
         console.log("After score: " + currentGame["score"])
         displayMessage("right");
     } else {
-        currentGame["score"]--
-        displayMessage("Wrong");
+        displayMessage("wrong");
         timeLeft=timeLeft-5
     }
 }
@@ -224,7 +215,6 @@ function setFinalScore() {
 //Get initials and pair with score and write to storage
 function setInitials (finalScore) {
     currentGame["initials"]=initialEl.value;
-    finalScore=currentGame["score"];
     storedHighScores.push(currentGame);
     storeGame();
 
@@ -238,8 +228,7 @@ function populateHighScores () {
     console.log(storedHighScores);
     storedHighScores=JSON.parse(localStorage.getItem("storedHighScores"));
     console.log("storedHighScores after:")
-    console.log(storedHighScores);
-
+    console.log(storedHighScores); 
     highScoresEl.innerHTML=""
     var tbl = document.createElement("table");
     var tblh=document.createElement("thead")
@@ -251,6 +240,7 @@ function populateHighScores () {
     c=r.insertCell(1);
     c.innerHTML="<h2>Score</h2>"
     if (storedHighScores !== null){
+        storedHighScores=storedHighScores.sort((a, b) => (a.score - b.score) ? -1 : 1);
         console.log("High Scores Present")
         displayMessage("high");
     storedHighScores.forEach(function (gameobj, index) {
@@ -274,6 +264,7 @@ function populateHighScores () {
 function countdown() {
       timeLeft = 30;
       timeInterval = setInterval(function () {
+        currentGame["score"]=timeLeft;
       if (timeLeft > 1) {
         timerEle.textContent = timeLeft + " seconds remaining";
         timeLeft--;
@@ -312,14 +303,22 @@ function setEventListeners() {
     if (target.matches("li")) {
         checkAnswer(currentQuestion,target.getAttribute("data-index"));
     if (currentQuestion === questions.length-1) {
-        console.log("Game Ended");
-        clearInterval(timeInterval);
+        console.log("Game Ended:All questions answered");
+ clearInterval(timeInterval);
         setState(2);
     } else {
         currentQuestion++;
         populateQuestion(currentQuestion)
     }
     }
+  });
+//Adding a Listener here to still go to state 3 if the user
+//hits the enter key instead of clicking submit
+document.addEventListener("submit", function(event) {
+        event.preventDefault
+        console.log("Enter Pressed")
+        setInitials(currentGame.score);
+        setState(3);
   });
 }
 

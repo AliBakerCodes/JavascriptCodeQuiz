@@ -6,14 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./assets/css/reset.css">
     <link rel="stylesheet" href="./assets/css/styles.css">
-    <title>Javascript Code Quiz</title>
+    <title>Apex Legends Trivia</title>
 
 </head>
 <body>
     <div id="app">
-        <header>
-          <button id="highScoresBtn" data-states="[0,2]">High Scores</button>
-        </header>
         <main>
           <!-- Start Screen -->
             <section id="screen0" data-states="[0]">
@@ -28,18 +25,13 @@
                 <li>Game Over when you answer all the questions or the ring closes!</li>
             </ul>
             <!-- Start Game Button -->
-            <button>Drop In</button>
+            <button id="startGamebtn">Drop In</button><button id="highScoresBtn" data-states="[0,2]">High Scores</button>
           </section>
           <!-- Game Screen -->
           <section id="screen1" class="hide" data-states="[1]">
             <span id="timer"></span><br>
             <h2 id="question">Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit </h2>
-            <ol id="possibleAnswers">
-                <li>LoremIpsumDeltaBravo</li>
-                <li>LoremIpsumDeltaBravo</li>
-                <li>LoremIpsumDeltaBravo</li>
-                <li>LoremIpsumDeltaBravo</li>
-            </ol>
+            <ol id="possibleAnswers"></ol>
             <p>____________________________________________________</p><br>
             <h3><span id="message"></span></h3>
           </section>
@@ -54,7 +46,7 @@
               </label>
             </form>
             <!-- Submit High Scores Button -->
-            <button>Submt</button>
+            <button>Submit</button>
           </section>
           <!-- Show High Scores Screen -->
           <section id="screen3" class="hide" data-states="[3]">
