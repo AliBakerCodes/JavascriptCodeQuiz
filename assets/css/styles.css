@@ -1,131 +1,128 @@
 /* Variables */
-:root{
-    --cardtext: #faebd7;
-    --shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px 0px;
-    --glow:  #faebd7;
+:root {
+  --cardtext: #faebd7;
+  --shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px 0px;
+  --glow: #faebd7;
 }
 /* Global Elements */
 body {
-    font-family: sans-serif;
-    background-image: url("../images/apexbackground.jpg");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: 50% 50%;
-    background-size: cover;
-    background-position: center;
-  }
-  
-  #app {
-    display:inline-block;
-    max-height: 360px;
-    width: 700px;
-    overflow: hidden;
-  }
+  font-family: sans-serif;
+  background-image: url("../images/apexbackground.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: 50% 50%;
+  background-size: cover;
+  background-position: center;
+}
 
-  /* Pretty Buttons (4am) */
-    button {
-    box-shadow:--shadow;
-    padding: 10px;
-    margin: 20px;
-  }
-  
-  h1 {
-    margin-bottom: 10px;
-    color:var(--cardtext)
+#app {
+  display: inline-block;
+  max-height: 360px;
+  width: 700px;
+  overflow: hidden;
+}
+
+/* Pretty Buttons (4am) */
+button {
+  box-shadow: --shadow;
+  padding: 10px;
+  margin: 20px;
+}
+
+h1 {
+  margin-bottom: 10px;
+  color: var(--cardtext);
 }
 
 h2 {
   margin-bottom: 10px;
-  color:var(--cardtext);
+  color: var(--cardtext);
 }
 
-  .hide {
-    display: none;
-  }
+.hide {
+  display: none;
+}
 
-  /* Cards */
-  section {
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgb(92, 110, 124);
-    font-size: 18px;
-    border: 1px solid black;
-    border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px 0px;
-    color:var(--cardtext);
-    min-height: 400px;
-    max-height: 400px;
-    width: 800px;
-    padding: 30px 40px;
-    text-align: center;
- }
+/* Cards */
+section {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(92, 110, 124);
+  font-size: 18px;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px 0px;
+  color: var(--cardtext);
+  min-height: 400px;
+  max-height: 400px;
+  width: 800px;
+  padding: 30px 40px;
+  text-align: center;
+}
 /* Start Screen */
-  button {
-    position:relative;  
-    top: 20px;
-    border-radius: 5px;
-    padding: 10px;
-  }
-  
-  #screen0 p {
-      position:relative;
-        margin: 20px;
-  }
-  
-  #screen0 ul {
-      position: relative;
-      text-align: left;
-      left:100px;
-      margin:10px;
-      line-height: 1.5;
-  }
-  #screen0 li {
-      position:relative;
-      list-style:disc ;
-    }
+button {
+  position: relative;
+  top: 20px;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+#screen0 p {
+  position: relative;
+  margin: 20px;
+}
+
+#screen0 ul {
+  position: relative;
+  text-align: left;
+  left: 100px;
+  margin: 10px;
+  line-height: 1.5;
+}
+#screen0 li {
+  position: relative;
+  list-style: disc;
+}
 /* Game Screen */
 #screen1 ul {
-    position:relative;
-    text-align: left;
-    left: 150px;
-    margin:10px;
-    
+  position: relative;
+  text-align: left;
+  left: 150px;
+  margin: 10px;
 }
 
 #screen1 h2 {
-    text-decoration: underline;
+  color: black;
+  text-decoration: underline;
 }
 
 #screen1 li {
-    position: relative;
-    background-color: #4F7CAC;
-    border: 1px solid;
-    border-radius: 5px;
-    transition: all 0.01s ease-in-out;
-    width: 300px;
-    padding:8px;
-    margin: 5px auto;
-  }
-              
-  #screen1 li:hover,
-  #screen1 li:hover  {
-    box-shadow: inset 0px 0px 8px
-    var(--glow), 0 0 15px
-    var(--glow); 
-  }
+  position: relative;
+  background-color: #4f7cac;
+  border: 1px solid;
+  border-radius: 5px;
+  transition: all 0.01s ease-in-out;
+  width: 300px;
+  padding: 8px;
+  margin: 5px auto;
+}
 
-  /* Show High Scores Screen */
-  #screen3 table{
-    margin:0 auto;
-    border-spacing: 1.5em 10px;
-  }
+#screen1 li:hover,
+#screen1 li:hover {
+  box-shadow: inset 0px 0px 8px var(--glow), 0 0 15px var(--glow);
+}
 
-  #highScoresEl {
-    height: 200px;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-  
+/* Show High Scores Screen */
+#screen3 table {
+  margin: 0 auto;
+  border-spacing: 1.5em 10px;
+}
+
+#highScoresEl {
+  height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
