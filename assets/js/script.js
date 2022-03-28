@@ -262,7 +262,7 @@ function populateHighScores () {
 
 //The timer. If the timer reaches 0, Game Over!
 function countdown() {
-      timeLeft = 30;
+      timeLeft = 60;
       timeInterval = setInterval(function () {
         currentGame["score"]=timeLeft;
       if (timeLeft > 1) {
