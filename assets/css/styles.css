@@ -95,8 +95,9 @@ button {
 }
 
 #screen1 h2 {
-  color: black;
-  text-decoration: underline;
+  color: var(--cardtext);
+  /* text-decoration: underline; */
+  margin: 20px;
 }
 
 #screen1 li {
