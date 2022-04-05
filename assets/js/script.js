@@ -122,7 +122,7 @@ function storeGame() {
 function newGame() {
   currentQuestion = 0;
   currentGame = new quizGameObj("", 0);
-  populateQuestion(currentQuestion);
+  populateQuestion();
   countdown();
 }
 
